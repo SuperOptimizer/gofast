@@ -28,11 +28,11 @@ cmake -G Ninja "${LLVM_SRC}/llvm" \
   -DCMAKE_C_COMPILER="/usr/bin/clang" \
   -DCMAKE_CXX_COMPILER="/usr/bin/clang++" \
   -DLLVM_DEFAULT_TARGET_TRIPLE="${TARGET_TRIPLE}" \
-  -DCMAKE_C_FLAGS=" -static -march=native -stdlib=libc++ -fuse-ld=lld --rtlib=compiler-rt -unwind=libunwind -fno-semantic-interposition -fomit-frame-pointer -fno-common " \
-  -DCMAKE_CXX_FLAGS=" -static -march=native  -stdlib=libc++ -fuse-ld=lld --rtlib=compiler-rt -unwind=libunwind -fno-semantic-interposition -fomit-frame-pointer -fno-common " \
-  -DCMAKE_LINKFLAGS=" -static -fuse-ld=lld -stdlib=libc++ -fuse-ld=lld --rtlib=compiler-rt -unwind=libunwind" \
-  -DCMAKE_EXE_LINKER_FLAGS=" -static -fuse-ld=lld -stdlib=libc++ -fuse-ld=lld --rtlib=compiler-rt -unwind=libunwind" \
-  -DCMAKE_SHARED_LINKER_FLAGS=" -static -fuse-ld=lld -stdlib=libc++ -fuse-ld=lld --rtlib=compiler-rt -unwind=libunwind" \
+  -DCMAKE_C_FLAGS=" -static -march=native -stdlib=libc++ -fuse-ld=lld  -fno-semantic-interposition -fomit-frame-pointer -fno-common " \
+  -DCMAKE_CXX_FLAGS=" -static -march=native  -stdlib=libc++ -fuse-ld=lld  -fno-semantic-interposition -fomit-frame-pointer -fno-common " \
+  -DCMAKE_LINKFLAGS=" -static -fuse-ld=lld -stdlib=libc++ -fuse-ld=lld " \
+  -DCMAKE_EXE_LINKER_FLAGS=" -static -fuse-ld=lld -stdlib=libc++ -fuse-ld=lld  " \
+  -DCMAKE_SHARED_LINKER_FLAGS=" -static -fuse-ld=lld -stdlib=libc++ -fuse-ld=lld " \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_INSTALL_PREFIX="${SYSROOT_DIR}/usr" \
   -DLLVM_ENABLE_RUNTIMES="libc;libunwind;libcxxabi;libcxx;compiler-rt" \
@@ -105,13 +105,13 @@ cmake -G Ninja "${LLVM_SRC}/llvm" \
   -DLLVM_OPTIMIZED_TABLEGEN=ON \
   -DLLVM_USE_NEWPM=ON \
   -DLLVM_USE_LINKER=lld \
-  -DLLVM_PARALLEL_LINK_JOBS=8 \
+  -DLLVM_PARALLEL_LINK_JOBS=4 \
   -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS} \
   -DLLVM_PARALLEL_TABLEGEN_JOBS=${JOBS} \
   -DLLVM_OPTIMIZED_TABLEGEN=ON \
   -DLLVM_ENABLE_VECTORIZE=ON \
   -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
-  -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
+  -DCOMPILER_RT_DEFAULT_TARGET_ONLY=OFF \
   -DLLVM_POLLY_BUILD=OFF \
   -DLLVM_ENABLE_Z3_SOLVER=OFF \
   -DLLVM_EXTERNALIZE_DEBUGINFO=OFF \
@@ -202,7 +202,7 @@ cmake -G Ninja "${LLVM_SRC}/llvm" \
   -DLIBCXXABI_USE_COMPILER_RT=ON \
   -DLIBUNWIND_USE_COMPILER_RT=ON \
   -DLIBCXX_HAS_GCC_S_LIB=OFF \
-  -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
+  -DCOMPILER_RT_DEFAULT_TARGET_ONLY=OFF \
   -DLLVM_BUILD_STATIC=ON \
   -DLLVM_BUILD_SHARED=OFF \
   -DLLVM_ENABLE_PIC=OFF \
@@ -231,7 +231,7 @@ cmake -G Ninja "${LLVM_SRC}/llvm" \
   -DLLVM_OPTIMIZED_TABLEGEN=ON \
   -DLLVM_USE_NEWPM=ON \
   -DLLVM_USE_LINKER=lld \
-  -DLLVM_PARALLEL_LINK_JOBS=8 \
+  -DLLVM_PARALLEL_LINK_JOBS=4 \
   -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS} \
   -DLLVM_PARALLEL_TABLEGEN_JOBS=${JOBS} \
   -DLLVM_OPTIMIZED_TABLEGEN=ON \
