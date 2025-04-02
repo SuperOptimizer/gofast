@@ -250,25 +250,25 @@ EOF
     msg "Initializing APK database..."
     "$APK_BIN" --root "$ROOT_DIR" --keys-dir "$APK_DIR/keys" \
         --repositories-file "$REPOSF" --no-interactive --allow-untrusted \
-        --no-check-certificate add --initdb || true
+        --no-check-certificate add --initdb
 
     # Update repository indexes
     msg "Updating repository indexes..."
     "$APK_BIN" --root "$ROOT_DIR" --keys-dir "$APK_DIR/keys" \
         --repositories-file "$REPOSF" --no-interactive --allow-untrusted \
-        --no-check-certificate update || true
+        --no-check-certificate update
 
     # Install base system
     msg "Installing minimal system..."
     "$APK_BIN" --root "$ROOT_DIR" --keys-dir "$APK_DIR/keys" \
         --repositories-file "$REPOSF" --no-interactive --allow-untrusted \
-        --no-check-certificate --force-overwrite --no-scripts add base-full zsh bash ca-certificates || true
+        --no-check-certificate --force-overwrite --no-scripts add base-full zsh bash ca-certificates
 
     # Install essential packages
     msg "Installing additional essential packages..."
     "$APK_BIN" --root "$ROOT_DIR" --keys-dir "$APK_DIR/keys" \
         --repositories-file "$REPOSF" --no-interactive --allow-untrusted \
-        --no-check-certificate --force-overwrite --no-scripts add bash findutils gawk tzdata || true
+        --no-check-certificate --force-overwrite --no-scripts add bash findutils gawk tzdata clang llvm libunwind libunwind-devel libunwind-devel-static musl musl-devel musl-devel-static libcxx libcxx-devel libcxx-devel-static libcxxabi libcxxabi-devel libcxxabi-devel-static clang-rt-devel clang-tools-extra clang-tools-extra-static clang-libs clang-devel-static clang-devel clang-analyzer libatomic-chimera libatomic-chimera-devel libatomic-chimera-devel-static
 
     # Set up DNS
     setup_resolv
