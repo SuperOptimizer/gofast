@@ -1,5 +1,3 @@
-#clang.cmake
-
 set(CMAKE_C_COMPILER clang )
 set(CMAKE_CXX_COMPILER clang++ )
 set(CMAKE_ASM_COMPILER clang )
@@ -7,37 +5,29 @@ set(CMAKE_AR llvm-ar )
 set(CMAKE_RANLIB llvm-ranlib )
 set(CMAKE_LINKER lld )
 set(LIBCXX_HAS_MUSL_LIBC ON)
-
-set(LLVM_ENABLE_PROJECTS "clang;clang-tools-extra;lld")
+set(LLVM_ENABLE_PROJECTS "clang;lld")
 set(LLVM_ENABLE_RUNTIMES "compiler-rt;libcxx;libcxxabi;libunwind;libc")
-
 set(LLVM_TARGETS_TO_BUILD Native)
-
 set(CMAKE_BUILD_TYPE MinSizeRel)
 set(CMAKE_PLATFORM_NO_VERSIONED_SONAME ON)
-
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(LLVM_ENABLE_LTO OFF)
 set(PACKAGE_VENDOR xxx)
 set(BUILD_SHARED_LIBS OFF)
-
 set(LLVM_ENABLE_UNWIND_TABLES OFF)
 set(LLVM_STATIC_LINK_CXX_STDLIB ON)
 set(LLVM_INCLUDE_TESTS OFF)
 set(LLVM_INCLUDE_EXAMPLES OFF)
 set(LLVM_INCLUDE_BENCHMARKS OFF)
 set(LLVM_LIBC_FULL_BUILD ON)
-set(LIBC_HDRGEN_ONLY ON)
-
 set(CLANG_DEFAULT_CXX_STDLIB libc++)
 set(CLANG_DEFAULT_LINKER lld)
 set(CLANG_DEFAULT_OBJCOPY llvm-objcopy)
 set(CLANG_DEFAULT_RTLIB compiler-rt)
 set(CLANG_DEFAULT_UNWINDLIB libunwind)
 set(CLANG_PLUGIN_SUPPORT OFF)
-
 set(LIBUNWIND_ENABLE_SHARED OFF)
 set(LIBUNWIND_INSTALL_LIBRARY ON)
 set(LIBUNWIND_USE_COMPILER_RT ON)
@@ -54,15 +44,12 @@ set(LIBCXX_HARDENING_MODE "none")
 set(LIBCXX_USE_COMPILER_RT ON)
 set(LIBCXX_HAS_MUSL_LIBC ON)
 set(LIBCXX_INSTALL_LIBRARY ON)
-
 set(LLVM_ENABLE_PER_TARGET_RUNTIME_DIR OFF)
 set(COMPILER_RT_USE_BUILTINS_LIBRARY OFF)
 set(COMPILER_RT_BUILD_CRT ON)
-
 set(LIBCXX_ENABLE_EXCEPTIONS OFF)
 set(LIBCXXABI_ENABLE_EXCEPTIONS OFF)
 set(LIBUNWIND_ENABLE_EXCEPTIONS OFF)
-
 set(COMPILER_RT_BUILD_SANITIZERS OFF)
 set(COMPILER_RT_BUILD_XRAY OFF)
 set(COMPILER_RT_BUILD_LIBFUZZER OFF)
@@ -176,58 +163,3 @@ set(COMPILER_RT_BUILD_PROFILE OFF)
 set(COMPILER_RT_BUILD_MEMPROF OFF)
 
 set(LLVM_BUILD_TOOLS ON)
-set(LLVM_TOOLCHAIN_TOOLS
-  dsymutil
-  llvm-ar
-  llvm-cov
-  llvm-cxxfilt
-  llvm-debuginfod
-  llvm-debuginfod-find
-  llvm-dlltool
-  llvm-dwarfdump
-  llvm-dwp
-  llvm-ifs
-  llvm-gsymutil
-  llvm-lib
-  llvm-libtool-darwin
-  llvm-lipo
-  llvm-ml
-  llvm-mt
-  llvm-nm
-  llvm-objcopy
-  llvm-objdump
-  llvm-otool
-  llvm-pdbutil
-  llvm-profdata
-  llvm-rc
-  llvm-ranlib
-  llvm-readelf
-  llvm-readobj
-  llvm-size
-  llvm-strings
-  llvm-strip
-  llvm-symbolizer
-  llvm-undname
-  llvm-xray
-  opt-viewer
-  sancov
-  scan-build-py
-  )
-
-
-set(LLVM_DISTRIBUTION_COMPONENTS
-  clang
-  LTO
-  lld
-  libc
-  clang-apply-replacements
-  clang-format
-  clang-resource-headers
-  clang-include-fixer
-  clang-refactor
-  clang-scan-deps
-  find-all-symbols
-  builtins
-  runtimes
-  ${LLVM_TOOLCHAIN_TOOLS}
-  )
