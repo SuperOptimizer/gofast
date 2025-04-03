@@ -47,9 +47,8 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DLIBCXX_HAS_MUSL_LIBC=ON \
     -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS}
 
-# Build components
-ninja libc libcxx libunwind compiler-rt
-ninja install-distribution-stripped
+ninja
+ninja install
 
 echo "Build completed successfully"
 echo "Toolchain installed to: ${HOME_DIR}/llvm-toolchain"
