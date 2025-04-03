@@ -109,7 +109,10 @@ set(LIBCXX_USE_COMPILER_RT ON)
 set(LIBCXX_ENABLE_EXCEPTIONS OFF)
 set(LIBCXX_HAS_MUSL_LIBC=ON)
 
-
+set(LLVM_LIBC_INCLUDE_SCUDO ON)
+set(COMPILER_RT_BUILD_SCUDO_STANDALONE_WITH_LLVM_LIBC ON)
+set(LLVM_LIBC_FULL_BUILD ON)
+set(LIBC_ENABLE_USE_BY_CLANG ON)
 
 # libcxxabi options
 set(LIBCXXABI_ENABLE_SHARED OFF)
@@ -147,25 +150,24 @@ set(SCUDO_USE_COMPILER_RT ON)
 set(SCUDO_ENABLE_EXCEPTIONS OFF)
 
 # Main LLVM target triples
-set(LLVM_DEFAULT_TARGET_TRIPLE "${TARGET_TRIPLE}")
-set(LLVM_TARGET_TRIPLE "${TARGET_TRIPLE}")
-set(LLVM_HOST_TRIPLE "${TARGET_TRIPLE}")
-set(CMAKE_HOST_TRIPLE "${TARGET_TRIPLE}")
+set(LLVM_DEFAULT_TARGET_TRIPLE "x86_64-linux-llvm")
+set(LLVM_TARGET_TRIPLE "x86_64-linux-llvm")
+set(LLVM_HOST_TRIPLE "x86_64-linux-llvm")
+set(CMAKE_HOST_TRIPLE "x86_64-linux-llvm")
 
 # Runtime libraries target triples
-set(LIBCXX_TARGET_TRIPLE "${TARGET_TRIPLE}")
-set(LIBCXXABI_TARGET_TRIPLE "${TARGET_TRIPLE}")
-set(LIBUNWIND_TARGET_TRIPLE "${TARGET_TRIPLE}")
-set(COMPILER_RT_TARGET_TRIPLE "${TARGET_TRIPLE}")
-set(LIBC_TARGET_TRIPLE "${TARGET_TRIPLE}")
-set(OPENMP_TARGET_TRIPLE "${TARGET_TRIPLE}")
-set(SCUDO_TARGET_TRIPLE "${TARGET_TRIPLE}")
+set(LIBCXX_TARGET_TRIPLE "x86_64-linux-llvm")
+set(LIBCXXABI_TARGET_TRIPLE "x86_64-linux-llvm")
+set(LIBUNWIND_TARGET_TRIPLE "x86_64-linux-llvm")
+set(COMPILER_RT_TARGET_TRIPLE "x86_64-linux-llvm")
+set(LIBC_TARGET_TRIPLE "x86_64-linux-llvm")
+set(OPENMP_TARGET_TRIPLE "x86_64-linux-llvm")
+set(SCUDO_TARGET_TRIPLE "x86_64-linux-llvm")
 
 # Clang and related tools
-set(CLANG_TARGET_TRIPLE "${TARGET_TRIPLE}")
-set(LLD_TARGET_TRIPLE "${TARGET_TRIPLE}")
-set(LLDB_TARGET_TRIPLE "${TARGET_TRIPLE}")
-
+set(CLANG_TARGET_TRIPLE "x86_64-linux-llvm")
+set(LLD_TARGET_TRIPLE "x86_64-linux-llvm")
+set(LLDB_TARGET_TRIPLE "x86_64-linux-llvm")
 
 set(COMPILER_RT_BUILD_SANITIZERS OFF)
 set(COMPILER_RT_BUILD_XRAY OFF)
@@ -173,34 +175,59 @@ set(COMPILER_RT_BUILD_LIBFUZZER OFF)
 set(COMPILER_RT_BUILD_PROFILE OFF)
 set(COMPILER_RT_BUILD_MEMPROF OFF)
 
-# Setting up the stage2 LTO option needs to be done on the stage1 build so that
-# the proper LTO library dependencies can be connected.
+set(LLVM_BUILD_TOOLS ON)
 set(LLVM_TOOLCHAIN_TOOLS
+  dsymutil
   llvm-ar
-  llvm-config
   llvm-cov
+  llvm-cxxfilt
+  llvm-debuginfod
+  llvm-debuginfod-find
+  llvm-dlltool
   llvm-dwarfdump
-  llvm-link
+  llvm-dwp
+  llvm-ifs
+  llvm-gsymutil
+  llvm-lib
+  llvm-libtool-darwin
+  llvm-lipo
+  llvm-ml
+  llvm-mt
   llvm-nm
   llvm-objcopy
   llvm-objdump
+  llvm-otool
+  llvm-pdbutil
   llvm-profdata
-  llvm-ranlib
   llvm-rc
+  llvm-ranlib
   llvm-readelf
   llvm-readobj
   llvm-size
   llvm-strings
   llvm-strip
-  llvm-tblgen
- )
+  llvm-symbolizer
+  llvm-undname
+  llvm-xray
+  opt-viewer
+  sancov
+  scan-build-py
+  )
+
 
 set(LLVM_DISTRIBUTION_COMPONENTS
   clang
-  clang-resource-headers
-  clang-tblgen
+  LTO
   lld
-  runtimes
+  libc
+  clang-apply-replacements
+  clang-format
+  clang-resource-headers
+  clang-include-fixer
+  clang-refactor
+  clang-scan-deps
+  find-all-symbols
   builtins
+  runtimes
   ${LLVM_TOOLCHAIN_TOOLS}
- )
+  )
