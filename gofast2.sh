@@ -37,12 +37,6 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DLLVM_ENABLE_PROJECTS="clang"
 ninja llvm-tblgen clang-tblgen
 
-# Build libc-hdrgen separately
-mkdir -p "${WORK_DIR}/hdrgen-build"
-cd "${WORK_DIR}/hdrgen-build"
-cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" -DCMAKE_BUILD_TYPE=Release
-
-ninja libc-hdrgen
 
 
 # Install kernel headers
@@ -58,7 +52,6 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DCMAKE_INSTALL_PREFIX="${HOME_DIR}/llvm-toolchain" \
     -DLLVM_TABLEGEN="${WORK_DIR}/tablegen-build/bin/llvm-tblgen" \
     -DCLANG_TABLEGEN="${WORK_DIR}/tablegen-build/bin/clang-tblgen" \
-    -DLIBC_HDRGEN_EXE="${WORK_DIR}/hdrgen-build/bin/libc-hdrgen" \
     -DLLVM_ENABLE_PROJECTS="clang;lld" \
     -DLLVM_ENABLE_RUNTIMES="libc;libcxx;libunwind;compiler-rt;libcxxabi" \
     -DLLVM_LIBC_FULL_BUILD=ON \
