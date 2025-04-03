@@ -1,5 +1,13 @@
 #clang.cmake
 
+set(CMAKE_C_COMPILER clang )
+set(CMAKE_CXX_COMPILER clang++ )
+set(CMAKE_ASM_COMPILER clang )
+set(CMAKE_AR llvm-ar )
+set(CMAKE_RANLIB llvm-ranlib )
+set(CMAKE_LINKER lld )
+set(LIBCXX_HAS_MUSL_LIBC ON)
+
 set(LLVM_ENABLE_PROJECTS "clang;clang-tools-extra;lld")
 set(LLVM_ENABLE_RUNTIMES "compiler-rt;libcxx;libcxxabi;libunwind;libc")
 

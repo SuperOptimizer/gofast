@@ -274,7 +274,8 @@ EOF
         libcxx libcxx-devel libcxx-devel-static libcxxabi libcxxabi-devel \
         libcxxabi-devel-static clang-rt-devel clang-tools-extra clang-tools-extra-static \
         clang-libs clang-devel-static clang-devel clang-analyzer libatomic-chimera \
-        libatomic-chimera-devel libatomic-chimera-devel-static lld lld-devel lld-devel-static
+        libatomic-chimera-devel libatomic-chimera-devel-static lld lld-devel lld-devel-static \
+        automake elfutils gmake gcc rsync
 
     # Set up DNS
     setup_resolv

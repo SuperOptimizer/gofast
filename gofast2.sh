@@ -77,7 +77,7 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/runtimes" \
     -DLLVM_TABLEGEN="${LLVM_TBLGEN}" \
     -DCLANG_TABLEGEN="${CLANG_TBLGEN}" \
     -DLIBC_HDRGEN_EXE="${STAGE1_DIR}/bin/libc-hdrgen" \
-    -DLLVM_ENABLE_RUNTIMES="libcxx;libc;libunwind;compiler-rt" \
+    -DLLVM_ENABLE_RUNTIMES="libcxx;libc;libunwind;compiler-rt;libcxxabi" \
     -DLIBCXX_TARGET_TRIPLE="${TARGET_TRIPLE}" \
     -DLIBCXXABI_TARGET_TRIPLE="${TARGET_TRIPLE}" \
     -DLIBUNWIND_TARGET_TRIPLE="${TARGET_TRIPLE}" \
@@ -100,26 +100,6 @@ cd "${SRC_DIR}/llvm-project/compiler-rt/lib"
 
 "${STAGE1_DIR}/bin/llvm-ar" rs "${SYSROOT_DIR}/usr/lib/libc.a" *.o
 
-# Build standalone compiler-rt
-mkdir -p "${WORK_DIR}/compiler-rt-build"
-cd "${WORK_DIR}/compiler-rt-build"
-cmake -G Ninja "${SRC_DIR}/llvm-project/compiler-rt" \
-    -C "${SCRIPT_DIR}/stage2.cmake" \
-    -DCMAKE_SYSROOT="${SYSROOT_DIR}" \
-    -DCMAKE_INSTALL_PREFIX="${SYSROOT_DIR}/usr" \
-    -DCMAKE_C_COMPILER="${STAGE1_DIR}/bin/clang" \
-    -DCMAKE_CXX_COMPILER="${STAGE1_DIR}/bin/clang++" \
-    -DCMAKE_ASM_COMPILER="${STAGE1_DIR}/bin/clang" \
-    -DCMAKE_AR="${STAGE1_DIR}/bin/llvm-ar" \
-    -DCMAKE_RANLIB="${STAGE1_DIR}/bin/llvm-ranlib" \
-    -DCOMPILER_RT_STANDALONE_BUILD=ON \
-    -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
-    -DCMAKE_C_COMPILER_TARGET="${TARGET_TRIPLE}" \
-    -DCMAKE_CXX_COMPILER_TARGET="${TARGET_TRIPLE}" \
-    -DCMAKE_C_COMPILER_WORKS=1 \
-    -DCMAKE_CXX_COMPILER_WORKS=1
-ninja install-compiler-rt-stripped
-
 # Build final toolchain
 mkdir -p "${WORK_DIR}/final-build"
 cd "${WORK_DIR}/final-build"
@@ -136,6 +116,8 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DLLVM_TARGET_TRIPLE="${TARGET_TRIPLE}" \
     -DLLVM_TABLEGEN="${LLVM_TBLGEN}" \
     -DCLANG_TABLEGEN="${CLANG_TBLGEN}" \
+    -DLLVM_ENABLE_RUNTIMES="libcxx;libc;libunwind;compiler-rt;libcxxabi" \
+    -DLLVM_ENABLE_PROJECTS="clang;lld" \
     -DCMAKE_CXX_FLAGS="-nostdinc++ -static -I${SYSROOT_DIR}/usr/include/c++/v1 -resource-dir=${SYSROOT_DIR}" \
     -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS}
 ninja
