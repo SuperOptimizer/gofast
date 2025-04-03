@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Configuration
-TARGET_TRIPLE="x86_64-linux-llvm"
+TARGET_TRIPLE="x86_64-linux-musl"
 JOBS=$(nproc)
 
 # Directories
@@ -27,6 +27,19 @@ if [ ! -d "linux" ]; then
     git clone --depth 1 -c http.sslVerify=false https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 fi
 
+# Build tablegen tools first
+mkdir -p "${WORK_DIR}/tablegen-build"
+cd "${WORK_DIR}/tablegen-build"
+cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
+    -DLLVM_BUILD_TOOLS=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DLLVM_TARGETS_TO_BUILD="X86" \
+    -DLLVM_ENABLE_PROJECTS="clang"
+ninja llvm-tblgen clang-tblgen
+
+LLVM_TBLGEN="${WORK_DIR}/tablegen-build/bin/llvm-tblgen"
+CLANG_TBLGEN="${WORK_DIR}/tablegen-build/bin/clang-tblgen"
+
 # Stage 1: Build clang with host compiler
 mkdir -p "${WORK_DIR}/stage1-build"
 cd "${WORK_DIR}/stage1-build"
@@ -34,11 +47,14 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -C "${SCRIPT_DIR}/stage1.cmake" \
     -DCMAKE_INSTALL_PREFIX="${STAGE1_DIR}" \
     -DCMAKE_BUILD_TYPE=MinSizeRel \
+    -DLLVM_TABLEGEN="${LLVM_TBLGEN}" \
+    -DCLANG_TABLEGEN="${CLANG_TBLGEN}" \
     -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS}
 ninja
 ninja install-distribution-stripped
 
-if [ ! -f "${STAGE1_DIR}/bin/libc-hdrgen" ]; then
+if [ ! -f "${STAGE1_DIR}/bin/libc-hdrgen" ] && [ -f "${WORK_DIR}/stage1-build/bin/libc-hdrgen" ]; then
+    mkdir -p "${STAGE1_DIR}/bin"
     cp "${WORK_DIR}/stage1-build/bin/libc-hdrgen" "${STAGE1_DIR}/bin/"
 fi
 
@@ -58,8 +74,8 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/runtimes" \
     -DCMAKE_ASM_COMPILER="${STAGE1_DIR}/bin/clang" \
     -DCMAKE_AR="${STAGE1_DIR}/bin/llvm-ar" \
     -DCMAKE_RANLIB="${STAGE1_DIR}/bin/llvm-ranlib" \
-    -DLLVM_TABLEGEN="${STAGE1_DIR}/bin/llvm-tblgen" \
-    -DCLANG_TABLEGEN="${STAGE1_DIR}/bin/clang-tblgen" \
+    -DLLVM_TABLEGEN="${LLVM_TBLGEN}" \
+    -DCLANG_TABLEGEN="${CLANG_TBLGEN}" \
     -DLIBC_HDRGEN_EXE="${STAGE1_DIR}/bin/libc-hdrgen" \
     -DLLVM_ENABLE_RUNTIMES="libcxx;libc;libunwind;compiler-rt" \
     -DLIBCXX_TARGET_TRIPLE="${TARGET_TRIPLE}" \
@@ -118,8 +134,8 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DCMAKE_RANLIB="${STAGE1_DIR}/bin/llvm-ranlib" \
     -DLLVM_DEFAULT_TARGET_TRIPLE="${TARGET_TRIPLE}" \
     -DLLVM_TARGET_TRIPLE="${TARGET_TRIPLE}" \
-    -DLLVM_TABLEGEN="${STAGE1_DIR}/bin/llvm-tblgen" \
-    -DCLANG_TABLEGEN="${STAGE1_DIR}/bin/clang-tblgen" \
+    -DLLVM_TABLEGEN="${LLVM_TBLGEN}" \
+    -DCLANG_TABLEGEN="${CLANG_TBLGEN}" \
     -DCMAKE_CXX_FLAGS="-nostdinc++ -static -I${SYSROOT_DIR}/usr/include/c++/v1 -resource-dir=${SYSROOT_DIR}" \
     -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS}
 ninja

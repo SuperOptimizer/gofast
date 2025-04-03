@@ -159,6 +159,12 @@ set(LLD_TARGET_TRIPLE "${TARGET_TRIPLE}")
 set(LLDB_TARGET_TRIPLE "${TARGET_TRIPLE}")
 
 
+set(COMPILER_RT_BUILD_SANITIZERS OFF)
+set(COMPILER_RT_BUILD_XRAY OFF)
+set(COMPILER_RT_BUILD_LIBFUZZER OFF)
+set(COMPILER_RT_BUILD_PROFILE OFF)
+set(COMPILER_RT_BUILD_MEMPROF OFF)
+
 # Setting up the stage2 LTO option needs to be done on the stage1 build so that
 # the proper LTO library dependencies can be connected.
 set(LLVM_TOOLCHAIN_TOOLS
