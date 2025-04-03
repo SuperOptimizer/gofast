@@ -2,7 +2,6 @@
 set -euo pipefail
 
 # Configuration
-HOST_TRIPLE="x86_64-linux-musl"
 TARGET_TRIPLE="x86_64-linux-llvm"
 JOBS=$(nproc)
 
