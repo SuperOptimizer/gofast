@@ -53,14 +53,14 @@ LIBC_HDRGEN="${WORK_DIR}/hdrgen-build/bin/libc-hdrgen"
 
 # Install kernel headers
 cd "${SRC_DIR}/linux"
-make headers_install INSTALL_HDR_PATH="${SYSROOT_DIR}"
+make headers_install INSTALL_HDR_PATH="${SYSROOT_DIR}" SED="sed -r" || \
+    make headers_install INSTALL_HDR_PATH="${SYSROOT_DIR}"
 
 # Bootstrap cross build
-mkdir -p "${WORK_DIR}/libc-build"
-cd "${WORK_DIR}/libc-build"
+mkdir -p "${WORK_DIR}/bootstrap-build"
+cd "${WORK_DIR}/bootstrap-build"
 cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -C "${SCRIPT_DIR}/stage2.cmake" \
-    -DCMAKE_SYSROOT="${SYSROOT_DIR}" \
     -DCMAKE_INSTALL_PREFIX="${HOME_DIR}/llvm-toolchain" \
     -DLLVM_TABLEGEN="${LLVM_TBLGEN}" \
     -DCLANG_TABLEGEN="${CLANG_TBLGEN}" \
@@ -69,14 +69,20 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DLLVM_ENABLE_RUNTIMES="libc;libcxx;libunwind;compiler-rt" \
     -DLLVM_LIBC_FULL_BUILD=ON \
     -DLLVM_RUNTIME_TARGETS="${TARGET_TRIPLE}" \
-    -DLIBC_TARGET_TRIPLE="${TARGET_TRIPLE}" \
-    -DLIBCXX_TARGET_TRIPLE="${TARGET_TRIPLE}" \
-    -DLIBCXXABI_TARGET_TRIPLE="${TARGET_TRIPLE}" \
-    -DLIBUNWIND_TARGET_TRIPLE="${TARGET_TRIPLE}" \
-    -DCOMPILER_RT_TARGET_TRIPLE="${TARGET_TRIPLE}" \
+    -DCMAKE_BUILD_TYPE=MinSizeRel \
+    -DLIBCXX_HAS_MUSL_LIBC=ON \
+    -DLIBCXX_HAS_GCC_S_LIB=OFF \
+    -DLIBCXXABI_HAS_GCC_S_LIB=OFF \
+    -DLIBUNWIND_HAS_GCC_S_LIB=OFF \
+    -DLIBCXX_HAS_ATOMIC_LIB=OFF \
+    -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
+    -DCOMPILER_RT_BUILD_XRAY=OFF \
+    -DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
+    -DCOMPILER_RT_BUILD_PROFILE=OFF \
+    -DCOMPILER_RT_BUILD_MEMPROF=OFF \
     -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS}
 
-ninja clang
+# Build components
 ninja libc libcxx libunwind compiler-rt
 ninja install-distribution-stripped
 
