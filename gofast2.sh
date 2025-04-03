@@ -27,17 +27,6 @@ if [ ! -d "linux" ]; then
     git clone --depth 1 -c http.sslVerify=false https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 fi
 
-# Build tablegen tools first
-mkdir -p "${WORK_DIR}/tablegen-build"
-cd "${WORK_DIR}/tablegen-build"
-cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
-    -DLLVM_BUILD_TOOLS=ON \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DLLVM_TARGETS_TO_BUILD="X86" \
-    -DLLVM_ENABLE_PROJECTS="clang"
-ninja llvm-tblgen clang-tblgen
-
-
 
 # Install kernel headers
 cd "${SRC_DIR}/linux"
@@ -48,10 +37,8 @@ make headers_install INSTALL_HDR_PATH="${SYSROOT_DIR}" SED="sed -r" || \
 mkdir -p "${WORK_DIR}/bootstrap-build"
 cd "${WORK_DIR}/bootstrap-build"
 cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
-    -C "${SCRIPT_DIR}/stage2.cmake" \
+    -C "${SCRIPT_DIR}/toolchain.cmake" \
     -DCMAKE_INSTALL_PREFIX="${HOME_DIR}/llvm-toolchain" \
-    -DLLVM_TABLEGEN="${WORK_DIR}/tablegen-build/bin/llvm-tblgen" \
-    -DCLANG_TABLEGEN="${WORK_DIR}/tablegen-build/bin/clang-tblgen" \
     -DLLVM_ENABLE_PROJECTS="clang;lld" \
     -DLLVM_ENABLE_RUNTIMES="libc;libcxx;libunwind;compiler-rt;libcxxabi" \
     -DLLVM_LIBC_FULL_BUILD=ON \
