@@ -40,10 +40,8 @@ ninja llvm-tblgen clang-tblgen
 # Build libc-hdrgen separately
 mkdir -p "${WORK_DIR}/hdrgen-build"
 cd "${WORK_DIR}/hdrgen-build"
-cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DLLVM_TABLEGEN="${LLVM_TBLGEN}" \
-    -DLIBC_HDRGEN_EXE_PATH="${WORK_DIR}/hdrgen-build/bin"
+cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" -DCMAKE_BUILD_TYPE=Release
+
 ninja libc-hdrgen
 
 
