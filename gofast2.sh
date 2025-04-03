@@ -34,7 +34,10 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DLLVM_BUILD_TOOLS=ON \
     -DCMAKE_BUILD_TYPE=Release \
     -DLLVM_TARGETS_TO_BUILD="X86" \
+    -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS} \
+    -DLLVM_PARALLEL_LINK_JOBS=8 \
     -DLLVM_ENABLE_PROJECTS="clang"
+
 ninja llvm-tblgen clang-tblgen
 
 LLVM_TBLGEN="${WORK_DIR}/tablegen-build/bin/llvm-tblgen"
@@ -49,7 +52,9 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DCMAKE_BUILD_TYPE=MinSizeRel \
     -DLLVM_TABLEGEN="${LLVM_TBLGEN}" \
     -DCLANG_TABLEGEN="${CLANG_TBLGEN}" \
-    -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS}
+    -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS} \
+    -DLLVM_PARALLEL_LINK_JOBS=8
+
 ninja
 ninja install-distribution-stripped
 
@@ -66,6 +71,8 @@ make headers_install INSTALL_HDR_PATH="${SYSROOT_DIR}"
 mkdir -p "${WORK_DIR}/runtime-build"
 cd "${WORK_DIR}/runtime-build"
 cmake -G Ninja "${SRC_DIR}/llvm-project/runtimes" \
+    -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS} \
+    -DLLVM_PARALLEL_LINK_JOBS=8 \
     -C "${SCRIPT_DIR}/stage2.cmake" \
     -DCMAKE_SYSROOT="${SYSROOT_DIR}" \
     -DCMAKE_INSTALL_PREFIX="${SYSROOT_DIR}/usr" \
@@ -119,7 +126,8 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DLLVM_ENABLE_RUNTIMES="libcxx;libc;libunwind;compiler-rt;libcxxabi" \
     -DLLVM_ENABLE_PROJECTS="clang;lld" \
     -DCMAKE_CXX_FLAGS="-nostdinc++ -static -I${SYSROOT_DIR}/usr/include/c++/v1 -resource-dir=${SYSROOT_DIR}" \
-    -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS}
+    -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS} \
+    -DLLVM_PARALLEL_LINK_JOBS=8
 ninja
 ninja install-distribution-stripped
 
