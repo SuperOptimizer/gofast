@@ -8,7 +8,7 @@ JOBS=$(nproc)
 # Directories
 HOME_DIR="$HOME"
 WORK_DIR="${HOME_DIR}/build"
-SRC_DIR="${WORK_DIR}/src"
+SRC_DIR="${HOME_DIR}/src"
 SYSROOT_DIR="${WORK_DIR}/sysroot"
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
