@@ -37,19 +37,15 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DLLVM_ENABLE_PROJECTS="clang"
 ninja llvm-tblgen clang-tblgen
 
-LLVM_TBLGEN="${WORK_DIR}/tablegen-build/bin/llvm-tblgen"
-CLANG_TBLGEN="${WORK_DIR}/tablegen-build/bin/clang-tblgen"
-
 # Build libc-hdrgen separately
 mkdir -p "${WORK_DIR}/hdrgen-build"
 cd "${WORK_DIR}/hdrgen-build"
-cmake -G Ninja "${SRC_DIR}/llvm-project/libc" \
+cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DCMAKE_BUILD_TYPE=Release \
     -DLLVM_TABLEGEN="${LLVM_TBLGEN}" \
     -DLIBC_HDRGEN_EXE_PATH="${WORK_DIR}/hdrgen-build/bin"
 ninja libc-hdrgen
 
-LIBC_HDRGEN="${WORK_DIR}/hdrgen-build/bin/libc-hdrgen"
 
 # Install kernel headers
 cd "${SRC_DIR}/linux"
@@ -62,24 +58,15 @@ cd "${WORK_DIR}/bootstrap-build"
 cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -C "${SCRIPT_DIR}/stage2.cmake" \
     -DCMAKE_INSTALL_PREFIX="${HOME_DIR}/llvm-toolchain" \
-    -DLLVM_TABLEGEN="${LLVM_TBLGEN}" \
-    -DCLANG_TABLEGEN="${CLANG_TBLGEN}" \
-    -DLIBC_HDRGEN_EXE="${LIBC_HDRGEN}" \
+    -DLLVM_TABLEGEN="${WORK_DIR}/tablegen-build/bin/llvm-tblgen" \
+    -DCLANG_TABLEGEN="${WORK_DIR}/tablegen-build/bin/clang-tblgen" \
+    -DLIBC_HDRGEN_EXE="${WORK_DIR}/hdrgen-build/bin/libc-hdrgen" \
     -DLLVM_ENABLE_PROJECTS="clang;lld" \
-    -DLLVM_ENABLE_RUNTIMES="libc;libcxx;libunwind;compiler-rt" \
+    -DLLVM_ENABLE_RUNTIMES="libc;libcxx;libunwind;compiler-rt;libcxxabi" \
     -DLLVM_LIBC_FULL_BUILD=ON \
     -DLLVM_RUNTIME_TARGETS="${TARGET_TRIPLE}" \
     -DCMAKE_BUILD_TYPE=MinSizeRel \
     -DLIBCXX_HAS_MUSL_LIBC=ON \
-    -DLIBCXX_HAS_GCC_S_LIB=OFF \
-    -DLIBCXXABI_HAS_GCC_S_LIB=OFF \
-    -DLIBUNWIND_HAS_GCC_S_LIB=OFF \
-    -DLIBCXX_HAS_ATOMIC_LIB=OFF \
-    -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
-    -DCOMPILER_RT_BUILD_XRAY=OFF \
-    -DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
-    -DCOMPILER_RT_BUILD_PROFILE=OFF \
-    -DCOMPILER_RT_BUILD_MEMPROF=OFF \
     -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS}
 
 # Build components
