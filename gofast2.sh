@@ -56,6 +56,7 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DCMAKE_C_VISIBILITY_PRESET=hidden \
     -DCMAKE_C_FLAGS="-static -march=native -Os -g0 " \
     -DCMAKE_CXX_FLAGS="-static -march=native -Os -g0 " \
+    -DCMAKE_EXE_LINKER_FLAGS="-static" \
     -DCMAKE_HOST_TRIPLE="x86_64-linux-llvm" \
     -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
     -DCMAKE_LINKER=lld \
