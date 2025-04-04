@@ -19,7 +19,7 @@ mkdir -p "${SYSROOT_DIR}/usr/include" "${SYSROOT_DIR}/usr/lib" "${SYSROOT_DIR}/l
 # Clone repositories
 cd "${SRC_DIR}"
 if [ ! -d "llvm-project" ]; then
-    git clone --depth 1 -c http.sslVerify=false https://github.com/SuperOptimizer/llvm-project.git
+    git clone --depth 1 -c http.sslVerify=false https://github.com/llvm/llvm-project.git
 fi
 
 if [ ! -d "linux" ]; then
