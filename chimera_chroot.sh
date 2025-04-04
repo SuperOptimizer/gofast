@@ -275,7 +275,7 @@ EOF
         libcxxabi-devel-static clang-rt-devel clang-tools-extra clang-tools-extra-static \
         clang-libs clang-devel-static clang-devel clang-analyzer libatomic-chimera \
         libatomic-chimera-devel libatomic-chimera-devel-static lld lld-devel lld-devel-static \
-        automake elfutils gmake gcc rsync python-pyyaml
+        automake elfutils gmake gcc rsync python-pyyaml linux-headers linux-headers-cross
 
     # Set up DNS
     setup_resolv
