@@ -150,6 +150,9 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DPACKAGE_VENDOR=xxx \
     -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS} \
     -DLLVM_PARALLEL_LINK_JOBS=8 \
+    -DRUNTIMES_x86_64-linux-llvm_CMAKE_C_FLAGS="-static -march=native -Os -g0 " \
+    -DRUNTIMES_x86_64-linux-llvm_CMAKE_CXX_FLAGS="-static -march=native -Os -g0 " \
+    -DRUNTIMES_x86_64-linux-llvm_CMAKE_EXE_LINKER_FLAGS="-static" \
     -DRUNTIMES_x86_64-linux-llvm_COMPILER_RT_BUILD_CRT=ON \
     -DRUNTIMES_x86_64-linux-llvm_COMPILER_RT_BUILD_LIBFUZZER=OFF \
     -DRUNTIMES_x86_64-linux-llvm_COMPILER_RT_BUILD_MEMPROF=OFF \
