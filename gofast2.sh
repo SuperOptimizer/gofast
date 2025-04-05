@@ -37,15 +37,15 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DCLANG_DEFAULT_UNWINDLIB=libunwind \
     -DCLANG_PLUGIN_SUPPORT=OFF \
     -DCLANG_TARGET_TRIPLE="x86_64-linux-llvm" \
-    -DCMAKE_ASM_COMPILER=clang \
+    -DCMAKE_ASM_COMPILER=clang-20 \
     -DCMAKE_BUILD_TYPE=MinSizeRel \
-    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_CXX_COMPILER=clang++-20 \
     -DCMAKE_CXX_VISIBILITY_PRESET=hidden \
-    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_C_COMPILER=clang-20 \
     -DCMAKE_C_VISIBILITY_PRESET=hidden \
-    -DCMAKE_C_FLAGS="-static -march=native -Os -g0 " \
+    -DCMAKE_C_FLAGS="-static -march=native -Os -g0  "  \
     -DCMAKE_CXX_FLAGS="-static -march=native -Os -g0 " \
-    -DCMAKE_EXE_LINKER_FLAGS="-static" \
+    -DCMAKE_EXE_LINKER_FLAGS="-static -Wl,--push-state --whole-archive -lllvmlibc -Wl,--pop-state " \
     -DCMAKE_HOST_TRIPLE="x86_64-linux-llvm" \
     -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF \
     -DCMAKE_PLATFORM_NO_VERSIONED_SONAME=ON \
@@ -156,7 +156,7 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DLLVM_PARALLEL_LINK_JOBS=8 \
     -DRUNTIMES_x86_64-linux-llvm_CMAKE_C_FLAGS="-static -march=native -Os -g0 " \
     -DRUNTIMES_x86_64-linux-llvm_CMAKE_CXX_FLAGS="-static -march=native -Os -g0 " \
-    -DRUNTIMES_x86_64-linux-llvm_CMAKE_EXE_LINKER_FLAGS="-static" \
+    -DRUNTIMES_x86_64-linux-llvm_CMAKE_EXE_LINKER_FLAGS="-static -Wl,--push-state --whole-archive -lllvmlibc -Wl,--pop-state " \
     -DRUNTIMES_x86_64-linux-llvm_COMPILER_RT_BUILD_SCUDO_STANDALONE_WITH_LLVM_LIBC=ON \
     -DRUNTIMES_x86_64-linux-llvm_COMPILER_RT_BUILD_GWP_ASAN=OFF \
     -DRUNTIMES_x86_64-linux-llvm_COMPILER_RT_SCUDO_STANDALONE_BUILD_SHARED=OFF \
