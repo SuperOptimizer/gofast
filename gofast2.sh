@@ -37,11 +37,11 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DCLANG_DEFAULT_UNWINDLIB=libunwind \
     -DCLANG_PLUGIN_SUPPORT=OFF \
     -DCLANG_TARGET_TRIPLE="x86_64-linux-llvm" \
-    -DCMAKE_ASM_COMPILER=clang-20 \
+    -DCMAKE_ASM_COMPILER=clang \
     -DCMAKE_BUILD_TYPE=MinSizeRel \
-    -DCMAKE_CXX_COMPILER=clang++-20 \
+    -DCMAKE_CXX_COMPILER=clang++ \
     -DCMAKE_CXX_VISIBILITY_PRESET=hidden \
-    -DCMAKE_C_COMPILER=clang-20 \
+    -DCMAKE_C_COMPILER=clang \
     -DCMAKE_C_VISIBILITY_PRESET=hidden \
     -DCMAKE_C_FLAGS="-static -march=native -Os -g0    -unwind=libunwind  --rtlib=compiler-rt "  \
     -DCMAKE_CXX_FLAGS="-static -march=native -Os -g0   -unwind=libunwind -stdlib=libc++ --rtlib=compiler-rt -nostdinc++ -nostdinc -isystem /usr/include/c++/v1 -isystem /usr/include " \
@@ -104,6 +104,7 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DLIBC_ENABLE_USE_BY_CLANG=ON \
     -DLIBC_TARGET_TRIPLE="x86_64-linux-llvm" \
     -DLIBC_USE_COMPILER_RT=ON \
+    -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
     -DLIBUNWIND_ENABLE_EXCEPTIONS=OFF \
     -DLIBUNWIND_ENABLE_PIC=OFF \
     -DLIBUNWIND_ENABLE_SHARED=OFF \
@@ -279,6 +280,7 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DCOMPILER_RT_ENABLE_PIC=OFF \
     -DCLANG_DEFAULT_PIE_ON_LINUX=OFF \
     -DCOMPILER_RT_ENABLE_SHARED=OFF \
+    -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
     -DCOMPILER_RT_ENABLE_STATIC=ON \
     -DCOMPILER_RT_TARGET_TRIPLE="x86_64-linux-llvm" \
     -DCOMPILER_RT_USE_BUILTINS_LIBRARY=OFF \
