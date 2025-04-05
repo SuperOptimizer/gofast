@@ -44,7 +44,7 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DCMAKE_C_COMPILER=clang \
     -DCMAKE_C_VISIBILITY_PRESET=hidden \
     -DCMAKE_C_FLAGS="-static -march=native -Os -g0    -unwind=libunwind  --rtlib=compiler-rt "  \
-    -DCMAKE_CXX_FLAGS="-static -march=native -Os -g0   -unwind=libunwind -stdlib=libc++ --rtlib=compiler-rt -nostdinc++ -nostdinc -isystem /usr/include/c++/v1 -isystem /usr/include " \
+    -DCMAKE_CXX_FLAGS="-static -march=native -Os -g0   -unwind=libunwind -stdlib=libc++ --rtlib=compiler-rt  " \
     -DCMAKE_EXE_LINKER_FLAGS="-static  -unwind=libunwind -stdlib=libc++ --rtlib=compiler-rt " \
     -DCMAKE_HOST_TRIPLE="x86_64-linux-llvm" \
     -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF \
@@ -156,7 +156,7 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DLLVM_PARALLEL_COMPILE_JOBS=${JOBS} \
     -DLLVM_PARALLEL_LINK_JOBS=8 \
     -DRUNTIMES_x86_64-linux-llvm_CMAKE_C_FLAGS="-static -march=native -Os -g0  -unwind=libunwind  -stdlib=libc++ --rtlib=compiler-rt " \
-    -DRUNTIMES_x86_64-linux-llvm_CMAKE_CXX_FLAGS="-static -march=native -Os -g0   -unwind=libunwind  -stdlib=libc++ --rtlib=compiler-rt  -nostdinc++ -nostdinc -isystem /usr/include/c++/v1 -isystem /usr/include " \
+    -DRUNTIMES_x86_64-linux-llvm_CMAKE_CXX_FLAGS="-static -march=native -Os -g0   -unwind=libunwind  -stdlib=libc++ --rtlib=compiler-rt " \
     -DRUNTIMES_x86_64-linux-llvm_CMAKE_EXE_LINKER_FLAGS="-static  -unwind=libunwind -stdlib=libc++ --rtlib=compiler-rt " \
     -DRUNTIMES_x86_64-linux-llvm_COMPILER_RT_BUILD_SCUDO_STANDALONE_WITH_LLVM_LIBC=ON \
     -DRUNTIMES_x86_64-linux-llvm_COMPILER_RT_BUILD_GWP_ASAN=OFF \
