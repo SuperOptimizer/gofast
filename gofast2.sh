@@ -55,7 +55,7 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DCMAKE_C_COMPILER=clang \
     -DCMAKE_C_VISIBILITY_PRESET=hidden \
     -DCMAKE_C_FLAGS="-static -march=native -Os -g0 " \
-    -DCMAKE_CXX_FLAGS="-static -march=native -Os -g0 " \
+    -DCMAKE_CXX_FLAGS="-static -march=native -Os -g0 -nostdinc++ -isystem /usr/include/c++/v1 " \
     -DCMAKE_EXE_LINKER_FLAGS="-static" \
     -DCMAKE_HOST_TRIPLE="x86_64-linux-llvm" \
     -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
@@ -147,6 +147,7 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DLLVM_LIBC_INCLUDE_SCUDO=OFF \
     -DLLVM_OPTIMIZED_TABLEGEN=ON \
     -DLLVM_PARALLEL_COMPILE_JOBS=32 \
+    -DLIBCXX_HAS_MUSL_LIBC=On \
     -DLLVM_PARALLEL_LINK_JOBS=8 \
     -DLLVM_STATIC_LINK_CXX_STDLIB=ON \
     -DLLVM_TARGETS_TO_BUILD=Native \
@@ -183,6 +184,7 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DRUNTIMES_x86_64-linux-llvm_LIBCXXABI_USE_COMPILER_RT=ON \
     -DRUNTIMES_x86_64-linux-llvm_LIBCXXABI_USE_LLVM_UNWINDER=ON \
     -DRUNTIMES_x86_64-linux-llvm_LIBCXXABI_ENABLE_THREADS=OFF \
+    -DRUNTIMES_x86_64-linux-llvm_LIBCXX_HAS_MUSL_LIBC=On \
     -DRUNTIMES_x86_64-linux-llvm_LIBCXX_ABI_VERSION=2 \
     -DRUNTIMES_x86_64-linux-llvm_LIBCXX_ENABLE_EXCEPTIONS=OFF \
     -DRUNTIMES_x86_64-linux-llvm_LIBCXX_ENABLE_FILESYSTEM=OFF \
