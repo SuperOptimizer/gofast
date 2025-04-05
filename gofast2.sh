@@ -22,16 +22,6 @@ if [ ! -d "llvm-project" ]; then
     git clone --depth 1 -c http.sslVerify=false https://github.com/llvm/llvm-project.git
 fi
 
-if [ ! -d "linux" ]; then
-    git clone --depth 1 -c http.sslVerify=false https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-fi
-
-
-# Install kernel headers
-cd "${SRC_DIR}/linux"
-make headers_install INSTALL_HDR_PATH="${SYSROOT_DIR}" SED="sed -r" || \
-    make headers_install INSTALL_HDR_PATH="${SYSROOT_DIR}"
-
 # Bootstrap cross build
 mkdir -p "${WORK_DIR}/bootstrap-build"
 cd "${WORK_DIR}/bootstrap-build"
