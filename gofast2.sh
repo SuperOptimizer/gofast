@@ -47,7 +47,6 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DCLANG_DEFAULT_UNWINDLIB=libunwind \
     -DCLANG_PLUGIN_SUPPORT=OFF \
     -DCLANG_TARGET_TRIPLE="x86_64-linux-llvm" \
-    -DCMAKE_AR=llvm-ar \
     -DCMAKE_ASM_COMPILER=clang \
     -DCMAKE_BUILD_TYPE=MinSizeRel \
     -DCMAKE_CXX_COMPILER=clang++ \
@@ -264,7 +263,6 @@ cmake -G Ninja "${SRC_DIR}/llvm-project/llvm" \
     -DCLANG_DEFAULT_UNWINDLIB=libunwind \
     -DCLANG_PLUGIN_SUPPORT=OFF \
     -DCLANG_TARGET_TRIPLE="x86_64-linux-llvm" \
-    -DCMAKE_AR=llvm-ar \
     -DLLVM_ENABLE_LIBCXX=ON \
     -DCMAKE_ASM_COMPILER="${HOME_DIR}/llvm-toolchain/bin/clang" \
     -DCMAKE_BUILD_TYPE=MinSizeRel \
